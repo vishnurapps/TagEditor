@@ -3,6 +3,11 @@ from PyQt5.QtGui import *
 import sys
  
 class TagEditor(QDialog):
+
+    def openAndLoad(self):
+        print("Inside the openAndLoad")
+        filename = QFileDialog.getOpenFileName(parent=self, caption='Open file', filter='*.mp3')
+
     def __init__(self):
         QDialog.__init__(self)
  
@@ -36,8 +41,12 @@ class TagEditor(QDialog):
         layout.addWidget(self.btnApply, 5, 1)
         layout.addWidget(self.btnCancel, 5, 2)
         self.setLayout(layout)
+        self.btnOpen.clicked.connect(self.openAndLoad)
 
 
+		
+		
+		
 app = QApplication(sys.argv)
 dialog = QDialog()
 dialog.show()
