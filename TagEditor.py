@@ -1,16 +1,27 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import sys
+import eyed3
  
 class TagEditor(QDialog):
 
     def openAndLoad(self):
         print("Inside the openAndLoad")
-        filename = QFileDialog.getOpenFileName(parent=self, caption='Open file', filter='*.mp3')
+        filename, filter= QFileDialog.getOpenFileName(parent=self, caption='Open file', filter='*.mp3')
+        print(filename)
+        self.audiofile = eyed3.load(filename)
+        self.leTrackNumber.setText(self.audiofile.tag.track_num[0])
+        self.leTitle.setText(self.audiofile.tag.title)
+        self.leArtist.setText(self.audiofile.tag.artist)
+        self.leAlbumArtist.setText(self.audiofile.tag.album_artist)
+        #self.leGenre.setText(self.audiofile.tag.genre)
+        self.btnApply.setEnabled(True)
+        self.btnOpen.setEnabled(False)
 
     def __init__(self):
         QDialog.__init__(self)
- 
+
+        self.setWindowTitle("Mp3 Tag Editor")
         self.lblTrackNumber = QLabel("Track Number :")
         self.leTrackNumber = QLineEdit()
         self.lblTitle = QLabel("Title :")
