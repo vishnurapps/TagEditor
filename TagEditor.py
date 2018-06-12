@@ -8,7 +8,7 @@ class TagEditor(QDialog):
  
         self.lblTrackNumber = QLabel("Track Number :")
         self.leTrackNumber = QLineEdit()
-        self.lblTitle = QLabel("Track Number :")
+        self.lblTitle = QLabel("Title :")
         self.leTitle = QLineEdit()
         self.lblArtist = QLabel("Artist :")
         self.leArtist = QLineEdit()
