@@ -23,8 +23,8 @@ class ArtChanger(QDialog):
         layout.addWidget(self.btnCancel)
         logger.debug("Layout created and elements added")
         self.btnWeb.clicked.connect(self.from_web)
-        self.btnWeb.clicked.connect(self.from_local)
-        self.btnWeb.clicked.connect(self.cancel_and_close)
+        self.btnLocal.clicked.connect(self.from_local)
+        self.btnCancel.clicked.connect(self.cancel_and_close)
         self.setLayout(layout)
         logger.debug("Buttons connected")
 
