@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from PyQt5.QtCore import  *
 import sys
 import eyed3
 import logging
+from ClickableQLabel import ClickableQLabel
+from ArtChanger import ArtChanger
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -53,8 +54,8 @@ class TagEditor(QDialog):
         self.setWindowTitle("Mp3 Tag Editor")
         self.lblTrackNumber = QLabel("Track Number :")
         self.leTrackNumber = QLineEdit()
-        self.leArt = QLabel()
-        self.leArt.setPixmap(QPixmap("/home/vishnu/study/Music-icon.png"))
+        self.lblArt = ClickableQLabel()
+        self.lblArt.setPixmap(QPixmap("/home/vishnu/study/Music-icon.png"))
         self.lblTitle = QLabel("Title :")
         self.leTitle = QLineEdit()
         self.lblArtist = QLabel("Artist :")
@@ -70,12 +71,12 @@ class TagEditor(QDialog):
         self.btnCancel = QPushButton("Cancel")
         self.horizontalSpacer = QSpacerItem(150, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.dataBox = QGroupBox()
-        
+
         self.dataBoxLayout = QGridLayout()
         self.dataBox.setLayout(self.dataBoxLayout)
         self.songDataLayout = QHBoxLayout()
         self.buttonBoxLayout = QHBoxLayout()
-        
+
         self.dataBoxLayout.addWidget(self.lblTrackNumber, 0, 0)
         self.dataBoxLayout.addWidget(self.leTrackNumber, 0, 1)
         self.dataBoxLayout.addWidget(self.lblTitle, 1, 0)
@@ -90,7 +91,7 @@ class TagEditor(QDialog):
         self.dataBoxLayout.addWidget(self.leGenre, 5, 1)
 
         self.songDataLayout.addWidget(self.dataBox)
-        self.songDataLayout.addWidget(self.leArt)
+        self.songDataLayout.addWidget(self.lblArt)
         self.buttonBoxLayout.addSpacerItem(self.horizontalSpacer)
         self.buttonBoxLayout.addWidget(self.btnOpen)
         self.buttonBoxLayout.addWidget(self.btnApply)
@@ -104,6 +105,12 @@ class TagEditor(QDialog):
         self.btnOpen.clicked.connect(self.openAndLoad)
         self.btnApply.clicked.connect(self.applyChanges)
         self.btnCancel.clicked.connect(self.cancelAndClear)
+        self.lblArt.clicked.connect(self.change_art)
+        
+    def change_art(self):
+        logger.debug("Inside TagEditor change_art")
+        dia = ArtChanger(self.leAlbum.text())
+        dia.exec_()
 
 app = QApplication(sys.argv)
 #app.exec_()

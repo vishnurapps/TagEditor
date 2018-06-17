@@ -1,5 +1,6 @@
 import logging
 from PyQt5.QtWidgets import QPushButton, QHBoxLayout, QDialog
+import webbrowser
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -10,8 +11,9 @@ logger.addHandler(file_handler)
 
 
 class ArtChanger(QDialog):
-    def __init__(self):
+    def __init__(self, album):
         QDialog.__init__(self)
+        self.album = album
         logger.debug("Inside ArtChanger __init__")
         self.setWindowTitle("Change Album Art")
         self.btnWeb = QPushButton("From Web")
@@ -30,6 +32,9 @@ class ArtChanger(QDialog):
 
     def from_web(self):
         logger.debug("Inside ArtChanger from_web")
+        base_url = "https://www.google.com/search?q="
+        search_term = self.album.replace(" ", "+")
+        webbrowser.open(base_url+search_term, autoraise=True)
 
     def from_local(self):
         logger.debug("Inside ArtChanger from_local")
