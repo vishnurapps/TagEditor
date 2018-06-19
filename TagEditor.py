@@ -7,6 +7,7 @@ import logging
 from ClickableQLabel import ClickableQLabel
 from ArtChanger import ArtChanger
 from subprocess import PIPE, Popen
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -33,7 +34,12 @@ class TagEditor(QDialog):
         self.leGenre.setText(str(self.audiofile.tag.genre))
         image = Popen(['ffmpeg', '-i', filename, "/tmp/sample.jpg"], stdout=PIPE)
         image.communicate()
-        pixmap = QPixmap("/tmp/sample.jpg")
+        art = Path("/tmp/sample.jpg")
+        if art.is_file():
+            pixmap = QPixmap("/tmp/sample.jpg")
+        else:
+            pixmap = QPixmap("/home/vishnu/study/Music-icon.png")
+            QMessageBox.about(self, "No Image", "This file don't have any Album Art")
         pixmap = pixmap.scaledToHeight(240)
         pixmap = pixmap.scaledToWidth(240)
         self.lblArt.setPixmap(pixmap)
