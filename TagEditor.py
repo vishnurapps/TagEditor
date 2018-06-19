@@ -6,6 +6,7 @@ import eyed3
 import logging
 from ClickableQLabel import ClickableQLabel
 from ArtChanger import ArtChanger
+from subprocess import PIPE, Popen
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -19,6 +20,8 @@ class TagEditor(QDialog):
 
     def openAndLoad(self):
         logger.debug("Inside the TagEditor openAndLoad")
+        remove = Popen(['rm', '-rf', "/tmp/sample.jpg"], stdout=PIPE)
+        remove.communicate()
         filename, filter= QFileDialog.getOpenFileName(parent=self, caption='Open file', filter='*.mp3')
         logger.debug(filename)
         self.audiofile = eyed3.load(filename)
@@ -28,8 +31,15 @@ class TagEditor(QDialog):
         self.leAlbumArtist.setText(self.audiofile.tag.album_artist)
         logger.debug(type(self.audiofile.tag.genre))
         self.leGenre.setText(str(self.audiofile.tag.genre))
+        image = Popen(['ffmpeg', '-i', filename, "/tmp/sample.jpg"], stdout=PIPE)
+        image.communicate()
+        pixmap = QPixmap("/tmp/sample.jpg")
+        pixmap = pixmap.scaledToHeight(240)
+        pixmap = pixmap.scaledToWidth(240)
+        self.lblArt.setPixmap(pixmap)
         self.btnApply.setEnabled(True)
         self.btnOpen.setEnabled(False)
+
 
     def cancelAndClear(self):
         logger.debug("Inside TagEditor cancelAndClear")
@@ -46,6 +56,7 @@ class TagEditor(QDialog):
         self.audiofile.tag.title = self.leTitle.text()
         self.audiofile.tag.artist = self.leArtist.text()
         self.audiofile.tag.album_artist = self.leAlbumArtist.text()
+        #self.audiofile.tag.set
         self.audiofile.tag.genre = self.leGenre.text()
         self.audiofile.tag.save()
 
@@ -59,7 +70,6 @@ class TagEditor(QDialog):
         pixmap = QPixmap("/home/vishnu/study/Music-icon.png")
         pixmap = pixmap.scaledToHeight(240)
         pixmap = pixmap.scaledToWidth(240)
-        #self.lblArt.setPixmap(QPixmap("/home/vishnu/study/Music-icon.png"))
         self.lblArt.setPixmap(pixmap)
         self.lblTitle = QLabel("Title :")
         self.leTitle = QLineEdit()
@@ -88,12 +98,12 @@ class TagEditor(QDialog):
         self.dataBoxLayout.addWidget(self.leTitle, 1, 1)
         self.dataBoxLayout.addWidget(self.lblArtist, 2, 0)
         self.dataBoxLayout.addWidget(self.leArtist, 2, 1)
-        self.dataBoxLayout.addWidget(self.lblAlbum, 3, 0)
-        self.dataBoxLayout.addWidget(self.leAlbum, 3, 1)
-        self.dataBoxLayout.addWidget(self.lblAlbumArtist, 4, 0)
-        self.dataBoxLayout.addWidget(self.leAlbumArtist, 4, 1)
-        self.dataBoxLayout.addWidget(self.lblGenre, 5, 0)
-        self.dataBoxLayout.addWidget(self.leGenre, 5, 1)
+        # self.dataBoxLayout.addWidget(self.lblAlbum, 3, 0)
+        # self.dataBoxLayout.addWidget(self.leAlbum, 3, 1)
+        self.dataBoxLayout.addWidget(self.lblAlbumArtist, 3, 0)
+        self.dataBoxLayout.addWidget(self.leAlbumArtist, 3, 1)
+        self.dataBoxLayout.addWidget(self.lblGenre, 4, 0)
+        self.dataBoxLayout.addWidget(self.leGenre, 4, 1)
 
         self.songDataLayout.addWidget(self.dataBox)
         self.songDataLayout.addWidget(self.lblArt)
