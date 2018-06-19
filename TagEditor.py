@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 import sys
 import eyed3
 import logging
@@ -55,7 +56,11 @@ class TagEditor(QDialog):
         self.lblTrackNumber = QLabel("Track Number :")
         self.leTrackNumber = QLineEdit()
         self.lblArt = ClickableQLabel()
-        self.lblArt.setPixmap(QPixmap("/home/vishnu/study/Music-icon.png"))
+        pixmap = QPixmap("/home/vishnu/study/Music-icon.png")
+        pixmap = pixmap.scaledToHeight(240)
+        pixmap = pixmap.scaledToWidth(240)
+        #self.lblArt.setPixmap(QPixmap("/home/vishnu/study/Music-icon.png"))
+        self.lblArt.setPixmap(pixmap)
         self.lblTitle = QLabel("Title :")
         self.leTitle = QLineEdit()
         self.lblArtist = QLabel("Artist :")
@@ -109,7 +114,7 @@ class TagEditor(QDialog):
         
     def change_art(self):
         logger.debug("Inside TagEditor change_art")
-        dia = ArtChanger(self.leAlbum.text())
+        dia = ArtChanger(self.leAlbum.text(), self.lblArt)
         dia.exec_()
 
 app = QApplication(sys.argv)

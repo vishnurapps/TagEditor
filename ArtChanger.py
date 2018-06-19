@@ -1,5 +1,6 @@
 import logging
-from PyQt5.QtWidgets import QPushButton, QHBoxLayout, QDialog
+from PyQt5.QtWidgets import QPushButton, QHBoxLayout, QDialog, QFileDialog
+from PyQt5.QtGui import QPixmap
 import webbrowser
 
 logger = logging.getLogger(__name__)
@@ -11,9 +12,10 @@ logger.addHandler(file_handler)
 
 
 class ArtChanger(QDialog):
-    def __init__(self, album):
+    def __init__(self, album, art):
         QDialog.__init__(self)
         self.album = album
+        self.art = art
         logger.debug("Inside ArtChanger __init__")
         self.setWindowTitle("Change Album Art")
         self.btnWeb = QPushButton("From Web")
@@ -38,6 +40,12 @@ class ArtChanger(QDialog):
 
     def from_local(self):
         logger.debug("Inside ArtChanger from_local")
+        filename, filter= QFileDialog.getOpenFileName(parent=self, caption='Open file', filter='*.jpg, *.jpeg, *.png')
+        pixmap = QPixmap(filename)
+        pixmap = pixmap.scaledToHeight(240)
+        pixmap = pixmap.scaledToWidth(240)
+        self.art.setPixmap(pixmap)
+        #self.art.q
 
     def cancel_and_close(self):
         logger.debug(("Inside ArtChanger cancel_and_close"))
