@@ -1,2 +1,3 @@
-This is a mp3 meta-data editor. 
-This can be used to change the metadata of mp3 files. The GUI is provided by PyQt5
+## Tag Editor
+
+TagEditor is a mp3 meta-data editor, which can be used to change Artist, Album, Genre etc of a mp3 file. TagEditor is a GUI app which is powered by PyQt5
