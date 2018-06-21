@@ -62,7 +62,12 @@ class TagEditor(QDialog):
         self.audiofile.tag.title = self.leTitle.text()
         self.audiofile.tag.artist = self.leArtist.text()
         self.audiofile.tag.album_artist = self.leAlbumArtist.text()
-        #self.audiofile.tag.set
+        with open("/tmp/sample.jpg", "rb") as imageFile:
+            f = imageFile.read()
+            b = bytearray(f)
+
+        print b[0]
+        self.audiofile.images.set(3, b , "image/jpeg" ,u"Discription")
         self.audiofile.tag.genre = self.leGenre.text()
         self.audiofile.tag.save()
 
